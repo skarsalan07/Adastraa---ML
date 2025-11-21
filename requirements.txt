@@ -1,0 +1,6 @@
+Django
+gunicorn
+pandas
+scikit-learn
+joblib
+python-dotenv

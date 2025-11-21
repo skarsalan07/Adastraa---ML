@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sale Amount Prediction</title>
+</head>
+<body>
+    <h1>Upload test.csv</h1>
+
+    {% if error_message %}
+        <p style="color:red">{{ error_message }}</p>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Predict</button>
+    </form>
+</body>
+</html>
