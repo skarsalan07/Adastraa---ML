@@ -5,37 +5,70 @@
     <title>Prediction + Visualization</title>
 
     <style>
+        /* CSS Variables for theming */
+        :root {
+            --bg-color: #f6f7fb;
+            --text-color: #222;
+            --header-color: #333;
+            --subheader-color: #444;
+            --form-bg: white;
+            --border-color: #ccd;
+            --button-bg: #0066ff;
+            --button-hover: #004ee0;
+            --error-color: red;
+            --divider-color: #ddd;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --img-shadow: rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --header-color: #ffffff;
+            --subheader-color: #cccccc;
+            --form-bg: #2d2d2d;
+            --border-color: #444;
+            --button-bg: #0066ff;
+            --button-hover: #3385ff;
+            --error-color: #ff6666;
+            --divider-color: #444;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --img-shadow: rgba(0, 0, 0, 0.5);
+        }
+
         body {
             font-family: "Segoe UI", Arial, sans-serif;
             padding: 20px;
-            background: #f6f7fb;
-            color: #222;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         h1 {
             font-size: 32px;
             margin-bottom: 10px;
-            color: #333;
+            color: var(--header-color);
         }
 
         h2 {
             font-size: 24px;
             margin-top: 40px;
             margin-bottom: 15px;
-            color: #444;
+            color: var(--subheader-color);
         }
 
         h3 {
             margin-top: 20px;
-            color: #444;
+            color: var(--subheader-color);
         }
 
         form {
-            background: white;
+            background: var(--form-bg);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0px 4px 12px var(--shadow-color);
             width: 450px;
+            transition: background-color 0.3s;
         }
 
         select,
@@ -44,12 +77,15 @@
             padding: 8px;
             margin-top: 8px;
             border-radius: 6px;
-            border: 1px solid #ccd;
+            border: 1px solid var(--border-color);
             font-size: 15px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         button {
-            background: #0066ff;
+            background: var(--button-bg);
             color: white;
             padding: 10px 18px;
             border: none;
@@ -60,11 +96,11 @@
         }
 
         button:hover {
-            background: #004ee0;
+            background: var(--button-hover);
         }
 
         .error-text {
-            color: red;
+            color: var(--error-color);
             margin-bottom: 10px;
             font-weight: bold;
         }
@@ -72,18 +108,35 @@
         img {
             margin-top: 15px;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px var(--img-shadow);
         }
 
         .section-divider {
             margin: 40px 0;
             border: none;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid var(--divider-color);
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--button-bg);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
         }
     </style>
 </head>
 
 <body>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
 
     <h1>Sale Amount Prediction</h1>
 
@@ -125,7 +178,7 @@
             <option value="kde">KDE Plot</option>
         </select>
 
-        <button type="submit">Visualize</button>
+        <button type="visualize">Visualize</button>
     </form>
 
     {% if plot_image %}
@@ -137,6 +190,31 @@
     <h2 style="margin-top: 50px;">Feature Importance in Random Forest</h2>
     <img src="data:image/png;base64,{{ required_images.importance }}" width="700">
     {% endif %}
+
+    <script>
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateToggleButton(currentTheme);
+
+        function toggleTheme() {
+            const theme = document.documentElement.getAttribute('data-theme');
+            const newTheme = theme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleButton(newTheme);
+        }
+
+        function updateToggleButton(theme) {
+            const button = document.querySelector('.theme-toggle');
+            if (theme === 'dark') {
+                button.textContent = '☀️ Light Mode';
+            } else {
+                button.textContent = '🌙 Dark Mode';
+            }
+        }
+    </script>
 
 </body>
 
