@@ -92,8 +92,11 @@ The application includes:
 
 git clone https://github.com/skarsalan07/Adastraa---ML.git
 
+
+
 2️⃣ Install Dependencies
 
+cd Adastraa---ML
 pip install -r requirements.txt
 
 3️⃣ Run Django Server
@@ -126,3 +129,4 @@ A production-grade architecture could include:
 - Redis queue + Celery for async jobs
 - PostgreSQL for logs & user management
 - API gateway + load balancer
+
